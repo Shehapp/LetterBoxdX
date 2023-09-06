@@ -42,15 +42,19 @@ The application is written using Spring MVC framework and Maven (for external de
 
 2. Go to a folder `src/main/resources/properties`, add your Movie API key ([here are instructions how to obtain it](https://collectapi.com/api/imdb/imdb-api)) as follows:
 
-`  movie.apiKey=[YOUR KEY HERE] `
-4. Go to a folder `src/main/resources/properties`, add your db.properties file as follows:
+` movie.apiKey=[YOUR KEY HERE] `
+
+3. Go to a folder `src/main/resources/properties`, add your db.properties file as follows:
 
 `  db.driver=com.mysql.jdbc.Driver `
+
   ` db.url=jdbc:mysql://localhost:3306/[YOUR SCHEMA NAME HERE]?useSSL=false&serverTimezone=UTC`
+  
    `db.username=[YOUR USERNAME HERE]`
+   
    `db.password=[YOUR PASSWORD HERE]`
 
-3. The application will avaialble under URL `http://localhost:8080/home`
+4. The application will avaialble under URL `http://localhost:8080/home`
 
 ## Database Diagram
 
