@@ -27,18 +27,13 @@ public class QuoteImpl implements Quote{
 
         try {
             Future<QuoteDTO> future = executor.submit(() -> {
-                // Call the method that may take more than 2 seconds
                 ResponseEntity<QuoteDTO[]> movieQuoteResponseEntity= restTemplate.getForEntity(url, QuoteDTO[].class);
                 return Objects.requireNonNull(movieQuoteResponseEntity.getBody())[0];
             });
 
             try {
-                // Wait for the result, but time out after 2 seconds
                 return future.get(1, TimeUnit.SECONDS);
             } catch (TimeoutException e) {
-                // Handle the timeout
-                System.out.println("The operation timed out.");
-                // You can also cancel the task if needed
                 future.cancel(true);
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
