@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
   User: sheha
@@ -267,6 +268,21 @@
             align-items: center;
             padding: 10px 0;
         }
+        .test-button {
+            border: none;
+            background: none;
+            padding: 0;
+            font: inherit;
+            cursor: pointer;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+        .test-button:hover {
+            color: #e74c3c;
+        }
     </style>
 </head>
 <body>
@@ -278,7 +294,9 @@
         <li><a href="/home">Home</a></li>
         <c:if test="${profileData.myProfile==true || userName!=null}">
             <li><a href="/profile/${userName}">Profile</a></li>
-            <li><a href="/logout">Sign Out</a></li>
+            <li><form:form action="/logout" method="post">
+                <input class="test-button" type="submit" value="logout">
+            </form:form></li>
         </c:if>
         <c:if test="${profileData.myProfile==false and userName==null}">
             <li><a href="/login">Sign In</a></li>

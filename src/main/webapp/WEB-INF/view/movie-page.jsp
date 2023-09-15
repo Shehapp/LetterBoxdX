@@ -280,6 +280,21 @@
     .icon-heart-empty {
       color: #333; /* Change color to your preference */
     }
+    .test-button {
+      border: none;
+      background: none;
+      padding: 0;
+      font: inherit;
+      cursor: pointer;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+      transition: color 0.3s ease;
+    }
+    .test-button:hover {
+      color: #e74c3c;
+    }
   </style>
 
 </head>
@@ -293,7 +308,9 @@
     <c:if test="${userName!=null}" >
       <li><a href="/home">Home</a></li>
       <li><a href="/profile/${userName}">Profile</a></li>
-      <li><a href="/logout">Sign Out</a></li>
+      <li><form:form action="/logout" method="post">
+        <input class="test-button" type="submit" value="logout">
+      </form:form></li>
 
     </c:if>
     <c:if test="${userName==null}" >
