@@ -164,6 +164,8 @@
   <form:form >
     <label for="username"></label><input type="text" name="username" placeholder="Username" id="username" />
     <label for="password"></label><input type="password" name="password"  placeholder="Password" id="password" />
+    <label for="remember-me" >Remember me</label>
+    <input type="checkbox" value="1" name="remember-me" id="remember-me" style="  margin-bottom: 54px; transform: scale(0.4); /* Adjust the scale value as needed */">
     <input type="submit" value="Login" class="enter">
 </form:form>
 </div>
