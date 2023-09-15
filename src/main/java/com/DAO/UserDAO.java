@@ -45,4 +45,7 @@ public interface UserDAO {
     void addLog(UserLog userLog);
     List<UserLog> getUserLogs(String userName);
 
+    void addRole(Role role);
+    Role getRoleByName(String name);
+
 }

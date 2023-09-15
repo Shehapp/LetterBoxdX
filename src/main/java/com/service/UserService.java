@@ -10,7 +10,7 @@ public interface UserService {
     void addUser(UserDTO user);
     boolean isUserExist(String userName);
     boolean isEmailExist(String email);
-    User convertUserDTOToUser(UserDTO userDTO);
+    User convertUserDTOToUser(UserDTO userDTO, Roles roles);
     User getUserByUserName(String userName);
 
 
@@ -53,7 +53,6 @@ public interface UserService {
 
     void addLikedReview(String userName, Long reviewID);
     void removeLikedReview(String userName, Long reviewID);
-    boolean isLikedReview(String userName, Long reviewID);
 
 
     MovieStateDTO getMovieState(String userName, String imdbID);
@@ -66,4 +65,6 @@ public interface UserService {
     List<UserLog> getUserLogs(String userName);
     List<UserLogDTO> getUserLogsDTO(String userName);
     UserLogDTO convertUserLogToUserLogDTO(UserLog userLog);
+
+    Role getRoleByName(String name);
 }

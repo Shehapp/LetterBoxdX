@@ -96,7 +96,7 @@ public class MovieController {
     }
     @PostMapping("/unlike-review/{reviewId}")
     public String unlikeReview(@PathVariable("reviewId") Long reviewId,
-                             Authentication authentication) {
+                               Authentication authentication) {
         String userName=authentication!=null?authentication.getName():null;
         userService.removeLikedReview(userName, reviewId);
 

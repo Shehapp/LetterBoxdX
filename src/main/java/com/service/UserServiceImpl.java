@@ -4,6 +4,7 @@ import com.DAO.UserDAO;
 import com.DTO.*;
 import com.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,10 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+
 /*
 * convertMethods has implemented by:
 * @shahpp
@@ -34,10 +33,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user=this.getUserByUserName(s);
 
+        List<SimpleGrantedAuthority> authorities=new ArrayList<>();
+        for (Role auth:user.getRoles()){
+            authorities.add(new SimpleGrantedAuthority(auth.getName()));
+        }
+
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUserName())
                 .password(user.getPassword())
-                .authorities("USER")
+                .authorities(authorities)
                 .build();
     }
 
@@ -52,7 +56,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void addUser(UserDTO userDTO) {
-        User user=this.convertUserDTOToUser(userDTO);
+        User user=this.convertUserDTOToUser(userDTO,Roles.USER);
         userDAO.addUser(user);
     }
 
@@ -68,8 +72,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     @Override
-    public User convertUserDTOToUser(UserDTO userDTO){
+    public User convertUserDTOToUser(UserDTO userDTO,Roles roles){
         User user=new User();
+        if(user.getRoles()==null) {
+            user.setRoles(new HashSet<>());
+        }
+        user.getRoles().add(this.getRoleByName(roles.toString()));
         user.setUserName(userDTO.getUsername());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setEmail(userDTO.getEmail());
@@ -317,10 +325,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
 
-    @Override
-    public boolean isLikedReview(String userName, Long reviewID) {
-        return userDAO.isLikedReview(userName, reviewID);
-    }
 
 
 
@@ -396,6 +400,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             userLogDTO.setId(((UserLogReview) userLog).getReview().getId().toString());
         }
         return userLogDTO;
+    }
+
+    @Override
+    public Role getRoleByName(String name) {
+        Role role=userDAO.getRoleByName(name);
+        if(role==null){
+             role=new Role(name);
+            userDAO.addRole(role);
+        }
+        return role;
     }
 
 

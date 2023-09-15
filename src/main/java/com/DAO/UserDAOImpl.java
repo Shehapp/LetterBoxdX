@@ -271,4 +271,20 @@ public class UserDAOImpl implements UserDAO{
                 .getResultList();
     }
 
+    @Override
+    public void addRole(Role role) {
+        entityManager.persist(role);
+    }
+
+    @Override
+    public Role getRoleByName(String name) {
+        try {
+            return entityManager.createQuery("from Role r where r.name=:name", Role.class)
+                    .setParameter("name", name)
+                    .getSingleResult();
+        }catch (Exception e){
+            return null;
+        }
+    }
+
 }
