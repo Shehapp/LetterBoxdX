@@ -1,6 +1,5 @@
 package com.appconfig;
 
-import com.interceptor.AuthInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +12,6 @@ import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -27,8 +25,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 public class AppConfig implements WebMvcConfigurer {
 
 
-    @Autowired
-    AuthInterceptor authInterceptor;
+
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
@@ -69,11 +66,6 @@ public class AppConfig implements WebMvcConfigurer {
     }
 
 
-    // add interceptor
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authInterceptor).
-                addPathPatterns("/movie/*/*/**");
-    }
+
 
 }

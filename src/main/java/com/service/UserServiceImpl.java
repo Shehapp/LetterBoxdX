@@ -4,6 +4,9 @@ import com.DAO.UserDAO;
 import com.DTO.*;
 import com.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -16,13 +19,30 @@ import java.util.Random;
 * @shahpp
 * @4aiGpt
 * */
-@Service
-public class UserServiceImpl implements UserService{
+@Service("userDetailsService")
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
     UserDAO userDAO;
     @Autowired
     MovieService movieService;
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        User user=this.getUserByUserName(s);
+
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getUserName())
+                .password(user.getPassword())
+                .authorities("USER")
+                .build();
+    }
+
+
+
+
+
+
     public User getUserByUserNameAndPassword(String userName, String password) {
         return userDAO.getUserByUserNameAndPassword(userName, password);
     }
@@ -374,5 +394,6 @@ public class UserServiceImpl implements UserService{
         }
         return userLogDTO;
     }
+
 
 }

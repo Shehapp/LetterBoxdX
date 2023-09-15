@@ -10,6 +10,7 @@ import com.service.MovieService;
 import com.service.Quote;
 import com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,10 @@ public class MainController {
     MovieService movieService;
 
     @GetMapping({"/", "/home"})
-    String hh(Model model) {
+    String hh(Model model,
+              Authentication authentication) {
+
+        model.addAttribute("userName",authentication!=null?authentication.getName():null);
         try {
 
             QuoteDTO quote = this.quote.getQuote();
@@ -45,7 +49,12 @@ public class MainController {
     }
 
     @RequestMapping("/movie")
-    String getMovies(@RequestParam(value = "movieName",required = false) String movieName, Model model) {
+    String getMovies(
+            @RequestParam(value = "movieName",required = false) String movieName,
+            Model model,
+            Authentication authentication) {
+
+        model.addAttribute("userName",authentication!=null?authentication.getName():null);
 
         try {
             model.addAttribute("movies", consumeMovies.getMovies(movieName));
@@ -59,9 +68,10 @@ public class MainController {
 
     @RequestMapping("/movie/{id}")
     String getMovie(@PathVariable("id") String movieImdbId, Model model,
-                    @SessionAttribute(value = "userName", required = false) String userName) {
+                    Authentication authentication) {
 
-
+        String userName=authentication!=null?authentication.getName():null;
+        model.addAttribute("userName",authentication!=null?authentication.getName():null);
         // if movie is not in database, get it from api and add it to database
         if(!movieService.isMovieExist(movieImdbId)){
             movieService.addMovie(consumeMovies.getMovie(movieImdbId));
@@ -87,7 +97,9 @@ public class MainController {
 
     @GetMapping("review/{id}")
     String getReview(@PathVariable("id") String reviewID, Model model,
-                     @SessionAttribute(value = "userName", required = false) String userName) {
+                     Authentication authentication) {
+        String userName=authentication!=null?authentication.getName():null;
+        model.addAttribute("userName",authentication!=null?authentication.getName():null);
 
         ReviewDTO reviewDTO = userService.getReview(userName, Long.parseLong(reviewID));
         if(reviewDTO == null){

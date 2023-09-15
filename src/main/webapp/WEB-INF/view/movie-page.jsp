@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
   User: sheha
@@ -289,13 +290,13 @@
     <img class="logo" src="https://a.ltrbxd.com/logos/letterboxd-logo-h-neg-rgb-1000px.png" alt="Letterboxd Logo">
   </a>
   <ul class="nav-links">
-    <c:if test="${sessionScope.userName!=null}" >
+    <c:if test="${userName!=null}" >
       <li><a href="/home">Home</a></li>
-      <li><a href="/profile/${sessionScope.userName}">Profile</a></li>
+      <li><a href="/profile/${userName}">Profile</a></li>
       <li><a href="/logout">Sign Out</a></li>
 
     </c:if>
-    <c:if test="${sessionScope.userName==null}" >
+    <c:if test="${userName==null}" >
       <li><a href="/home">Home</a></li>
       <li><a href="/login">Sign In</a></li>
       <li><a href="/register">Create Account</a></li>
@@ -321,7 +322,7 @@
 
 
     <div class="btn-container">
-      <form action="/movie/${movie.imdbID}/watch/${!movieState.watched}" method="post">
+      <form:form action="/movie/${movie.imdbID}/watch/${!movieState.watched}" method="post">
         <button class="btn" type="submit">
 
           <c:if test="${movieState.watched==true}">
@@ -335,9 +336,9 @@
           </c:if>
 
         </button>
-        </form>
+        </form:form>
 
-      <form action="/movie/${movie.imdbID}/fav/${!movieState.favorite}" method="post">
+      <form:form action="/movie/${movie.imdbID}/fav/${!movieState.favorite}" method="post">
         <i class="fas fa-heart"></i>
         <button class="btn" type="submit">
 
@@ -352,9 +353,9 @@
           </c:if>
 
         </button>
-        </form>
+        </form:form>
 
-        <form action="/movie/${movie.imdbID}/watchlist/${!movieState.watchList}" method="post">
+        <form:form action="/movie/${movie.imdbID}/watchlist/${!movieState.watchList}" method="post">
           <button class="btn" type="submit">
             <c:if test="${movieState.watchList == true}">
               <i class="fas fa-check"></i>
@@ -367,17 +368,17 @@
             </c:if>
 
           </button>
-        </form>
+        </form:form>
 
     </div>
   </div>
 </div>
-<c:if test="${sessionScope.userName!=null}" >
+<c:if test="${userName!=null}" >
 <button class="open-button" onclick="openForm()">Review</button>
 
 <div class="form-popup" id="myForm">
 
-    <form action="/movie/${movie.imdbID}/add-review" class="form-container" method="post">
+    <form:form action="/movie/${movie.imdbID}/add-review" class="form-container" method="post">
       <button type="button" onclick="closeForm()">Close</button>
 
       <c:if test="${myReview!=null}">
@@ -404,7 +405,7 @@
       <c:if test="${myReview!=null}">
         <button type="submit" class="btn delete" formaction="/movie/${movie.imdbID}/delete-review">Delete Review</button>
         </c:if>
-    </form>
+    </form:form>
 </div>
 </c:if>
 <script>
@@ -439,14 +440,14 @@
             <span class="rev">" ${myReview.review} "</span>
             <br>
 
-            <c:if test="${sessionScope.userName==null || myReview.userName==sessionScope.userName }">
+            <c:if test="${userName==null || myReview.userName==userName }">
             <span class="likes">&#10084;
               <span class="join-year">
                 ${myReview.likes} likes
             </span>
             </span>
             </c:if>
-            <c:if test="${sessionScope.userName!=null && myReview.userName!=sessionScope.userName}">
+            <c:if test="${userName!=null && myReview.userName!=userName}">
               <form>
                 <a   href="/movie/${movie.imdbID}/like-review/${myReview.reviewId}"><span class="likes">&#10084;<span class="join-year">
                     <c:if test="${myReview.likedByUser ==true}">
@@ -493,14 +494,14 @@
             <span class="rev">" ${review1.review} "</span>
             <br>
 
-            <c:if test="${sessionScope.userName==null || review1.userName==sessionScope.userName }">
+            <c:if test="${userName==null || review1.userName==userName }">
             <span class="likes">&#10084;
               <span class="join-year">
                 ${review1.likes} likes
             </span>
             </span>
             </c:if>
-            <c:if test="${sessionScope.userName!=null && review1.userName!=sessionScope.userName}">
+            <c:if test="${userName!=null && review1.userName!=userName}">
               <form>
                 <a   href="/movie/${movie.imdbID}/like-review/${review1.reviewId}"><span class="likes">&#10084;<span class="join-year">
                     <c:if test="${review1.likedByUser ==true}">

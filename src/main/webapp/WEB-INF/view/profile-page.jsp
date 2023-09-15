@@ -276,11 +276,11 @@
     </a>
     <ul class="nav-links">
         <li><a href="/home">Home</a></li>
-        <c:if test="${profileData.myProfile==true || sessionScope.userName!=null}">
-            <li><a href="/profile/${sessionScope.userName}">Profile</a></li>
+        <c:if test="${profileData.myProfile==true || userName!=null}">
+            <li><a href="/profile/${userName}">Profile</a></li>
             <li><a href="/logout">Sign Out</a></li>
         </c:if>
-        <c:if test="${profileData.myProfile==false and sessionScope.userName==null}">
+        <c:if test="${profileData.myProfile==false and userName==null}">
             <li><a href="/login">Sign In</a></li>
             <li><a href="/register">Create Account</a></li>
 
@@ -396,14 +396,14 @@
             <span  >${review1.rating} out of 5.0 &nbsp;&nbsp;&nbsp;  Reviewed ${review1.createdAt}</span>
             <br>
             <span class="rev">" ${review1.review} "</span>
-            <c:if test="${sessionScope.userName==null || review1.userName==sessionScope.userName }">
+            <c:if test="${userName==null || review1.userName==userName }">
             <span class="likes">&#10084;
               <span class="join-year">
                 ${review1.likes} likes
             </span>
             </span>
             </c:if>
-            <c:if test="${sessionScope.userName!=null && review1.userName!=sessionScope.userName}">
+            <c:if test="${userName!=null && review1.userName!=userName}">
                 <form>
                     <a   href="/movie/${review1.imdbID}/like-review/${review1.reviewId}"><span class="likes">&#10084;<span class="join-year">
                     <c:if test="${review1.likedByUser ==true}">
@@ -443,8 +443,8 @@
         <c:if test="${favorite == true}" > <h4>FAVORITE</h4></c:if>
         <c:if test="${log == true}" > <h4>ACTIVITY</h4></c:if>
     <c:forEach var="log1" items="${logs}" varStatus="loop">
-        <c:if test="${sessionScope.userName==null || profileData.name!=sessionScope.userName}">${log1.userName}</c:if>
-        <c:if test="${sessionScope.userName!=null and profileData.name==sessionScope.userName}">You</c:if>
+        <c:if test="${userName==null || profileData.name!=userName}">${log1.userName}</c:if>
+        <c:if test="${userName!=null and profileData.name==userName}">You</c:if>
         &nbsp; ${log1.description} &nbsp;
         <c:if test="${log1.movieName==null}"><a href="/review/${log1.id}">review</a></c:if>
         <c:if test="${log1.movieName!=null}"><a href="/movie/${log1.id}">${log1.movieName}</a></c:if>

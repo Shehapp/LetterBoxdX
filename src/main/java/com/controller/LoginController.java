@@ -28,29 +28,6 @@ public class LoginController {
         return "login-page";
     }
 
-    @PostMapping("/login")
-    String loginPost(@RequestParam("username") String username,
-                     @RequestParam("password") String password,
-                     HttpSession session, Model model){
-
-        if(username!=null &&
-                password!=null &&
-                userService.getUserByUserNameAndPassword(username,password)!=null){
-                session.setAttribute("userName", username);
-                if (session.getAttribute("nextUrl")!=null) {
-                    String nextUrl = (String) session.getAttribute("nextUrl");
-                    session.removeAttribute("nextUrl");
-                    nextUrl= (String) nextUrl.subSequence(0,nextUrl.length()-11);
-
-                    return "redirect:" + nextUrl;
-                }
-                else
-                    return "redirect:/";
-        }
-        model.addAttribute("error", "Invalid username or password");
-        return "login-page";
-    }
-
     @GetMapping("/register")
     String register(@ModelAttribute("userDTO") UserDTO user){
         return "register-page";
@@ -65,12 +42,6 @@ public class LoginController {
         return "redirect:/login";
     }
 
-    @GetMapping("/logout")
-    String logout(HttpServletRequest request){
-        HttpSession session=request.getSession();
-        session.invalidate();
-        return "redirect:/";
-    }
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {

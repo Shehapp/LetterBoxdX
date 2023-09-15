@@ -289,13 +289,13 @@
     <img class="logo" src="https://a.ltrbxd.com/logos/letterboxd-logo-h-neg-rgb-1000px.png" alt="Letterboxd Logo">
   </a>
   <ul class="nav-links">
-    <c:if test="${sessionScope.userName!=null}" >
+    <c:if test="${userName!=null}" >
       <li><a href="/home">Home</a></li>
-      <li><a href="/profile/${sessionScope.userName}">Profile</a></li>
+      <li><a href="/profile/${userName}">Profile</a></li>
       <li><a href="/logout">Sign Out</a></li>
 
     </c:if>
-    <c:if test="${sessionScope.userName==null}" >
+    <c:if test="${userName==null}" >
       <li><a href="/home">Home</a></li>
       <li><a href="/login">Sign In</a></li>
       <li><a href="/register">Create Account</a></li>
@@ -314,14 +314,14 @@
     <span  >${review.rating} out of 5.0 &nbsp;&nbsp;&nbsp;  Reviewed ${review.createdAt}</span>
     <br>
     <span class="rev">" ${review.review} "</span>
-    <c:if test="${sessionScope.userName==null || review.userName==sessionScope.userName }">
+    <c:if test="${userName==null || review.userName==userName }">
             <span class="likes">&#10084;
               <span class="join-year">
                 ${review.likes} likes
             </span>
             </span>
     </c:if>
-    <c:if test="${sessionScope.userName!=null && review.userName!=sessionScope.userName}">
+    <c:if test="${userName!=null && review.userName!=userName}">
       <form>
         <a   href="/movie/${review.imdbID}/like-review/${review.reviewId}"><span class="likes">&#10084;<span class="join-year">
                     <c:if test="${review.likedByUser ==true}">
@@ -339,17 +339,6 @@
 </div>
 
 </div>
-
-
-
-
-
-
-
-
-
-
-
 
 
 </body>

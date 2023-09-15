@@ -3,6 +3,7 @@ package com.controller;
 import com.DTO.ProfileDTO;
 import com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +17,10 @@ public class ProfileController {
 
     @GetMapping("/{name}")
     public String profile(@PathVariable String name,
-                            @SessionAttribute(value = "userName",required = false) String userName,
-                          Model model) {
-
+                          Model model,
+                          Authentication authentication) {
+        String userName=authentication!=null?authentication.getName():null;
+        model.addAttribute("userName",authentication!=null?authentication.getName():null);
         ProfileDTO profileDTO=userService.getProfileDTO(name,userName);
         model.addAttribute("profileData", profileDTO);
         model.addAttribute("movies", userService.getWatchedDTO(name,3));
@@ -29,9 +31,10 @@ public class ProfileController {
 
     @GetMapping("/{name}/films")
     public String watched(@PathVariable String name,
-                          @SessionAttribute(value = "userName",required = false) String userName,
-                          Model model) {
-
+                          Model model,
+                          Authentication authentication) {
+        String userName=authentication!=null?authentication.getName():null;
+        model.addAttribute("userName",authentication!=null?authentication.getName():null);
         ProfileDTO profileDTO=userService.getProfileDTO(name,userName);
         model.addAttribute("profileData", profileDTO);
         model.addAttribute("movies", userService.getWatchedDTO(name,Integer.MAX_VALUE));
@@ -41,9 +44,10 @@ public class ProfileController {
     }
     @GetMapping("/{name}/watchlist")
     public String watchlist(@PathVariable String name,
-                          @SessionAttribute(value = "userName",required = false) String userName,
-                          Model model) {
-
+                            Model model,
+                            Authentication authentication) {
+        String userName=authentication!=null?authentication.getName():null;
+        model.addAttribute("userName",authentication!=null?authentication.getName():null);
         ProfileDTO profileDTO=userService.getProfileDTO(name,userName);
         model.addAttribute("profileData", profileDTO);
         model.addAttribute("movies", userService.getWatchListDTO(name));
@@ -54,9 +58,10 @@ public class ProfileController {
     }
     @GetMapping("/{name}/favorite")
     public String favorite(@PathVariable String name,
-                          @SessionAttribute(value = "userName",required = false) String userName,
-                          Model model) {
-
+                           Model model,
+                           Authentication authentication) {
+        String userName=authentication!=null?authentication.getName():null;
+        model.addAttribute("userName",authentication!=null?authentication.getName():null);
         ProfileDTO profileDTO=userService.getProfileDTO(name,userName);
         model.addAttribute("profileData", profileDTO);
         model.addAttribute("movies", userService.getFavoriteDTO(name));
@@ -66,9 +71,10 @@ public class ProfileController {
     }
     @GetMapping("/{name}/reviews")
     public String reviews(@PathVariable String name,
-                            @SessionAttribute(value = "userName",required = false) String userName,
-                            Model model) {
-
+                          Model model,
+                          Authentication authentication) {
+        String userName=authentication!=null?authentication.getName():null;
+        model.addAttribute("userName",authentication!=null?authentication.getName():null);
         ProfileDTO profileDTO=userService.getProfileDTO(name,userName);
         model.addAttribute("profileData", profileDTO);
         model.addAttribute("reviews", userService.getUserReviewsDTO(name,userName));
@@ -78,10 +84,11 @@ public class ProfileController {
     }
     @GetMapping("/{name}/logs")
     public String logs(@PathVariable String name,
-                            @SessionAttribute(value = "userName",required = false) String userName,
-                            Model model) {
-
-        ProfileDTO profileDTO=userService.getProfileDTO(name,userName);
+                       Model model,
+                       Authentication authentication) {
+        String userName=authentication!=null?authentication.getName():null;
+        model.addAttribute("userName",authentication!=null?authentication.getName():null);
+        ProfileDTO profileDTO = userService.getProfileDTO(name, userName);
         model.addAttribute("profileData", profileDTO);
         model.addAttribute("logs", userService.getUserLogsDTO(name));
         model.addAttribute("log", true);

@@ -3,6 +3,7 @@ package com.controller;
 import com.DTO.ReviewDTO;
 import com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,9 @@ public class MovieController {
     @PostMapping("/fav/{action}")
     public String fav(@PathVariable("id") String movieId,
                       @PathVariable("action") boolean action,
-                      @SessionAttribute("userName") String userName) {
+                      Authentication authentication) {
+        System.out.println("iam heeeeeeeeeeeeerrrrrrrrrrrrrrrrr");
+        String userName=authentication!=null?authentication.getName():null;
         if (action) {
             userService.addMovieToFavorite(userName, movieId);
         } else {
@@ -31,7 +34,8 @@ public class MovieController {
     @PostMapping("/watch/{action}")
     public String watchMovie(@PathVariable("id") String movieId,
                              @PathVariable("action") boolean action,
-                             @SessionAttribute("userName") String userName) {
+                             Authentication authentication) {
+        String userName=authentication!=null?authentication.getName():null;
         if (action) {
             userService.addMovieToWatched(userName, movieId);
         } else {
@@ -43,7 +47,8 @@ public class MovieController {
     @PostMapping("/watchlist/{action}")
     public String watchlistMovie(@PathVariable("id") String movieId,
                                  @PathVariable("action") boolean action,
-                                 @SessionAttribute("userName") String userName) {
+                                 Authentication authentication) {
+        String userName=authentication!=null?authentication.getName():null;
 
         if (action) {
             userService.addMovieToWatchList(userName, movieId);
@@ -56,9 +61,9 @@ public class MovieController {
 
     @PostMapping("/add-review")
     public String addReview(@PathVariable("id") String movieId,
-                            @SessionAttribute("userName") String userName,
-                            ReviewDTO reviewDTO) {
-
+                            ReviewDTO reviewDTO,
+                            Authentication authentication) {
+        String userName=authentication!=null?authentication.getName():null;
         reviewDTO.setUserName(userName);
         reviewDTO.setImdbID(movieId);
 
@@ -74,7 +79,8 @@ public class MovieController {
 
     @PostMapping("/delete-review")
     public String deleteReview(@PathVariable("id") String movieId,
-                               @SessionAttribute("userName") String userName) {
+                               Authentication authentication) {
+        String userName=authentication!=null?authentication.getName():null;
         userService.deleteReview(userName, movieId);
         return "redirect:/movie/" + movieId;
     }
@@ -82,7 +88,8 @@ public class MovieController {
 
     @RequestMapping("/like-review/{reviewId}")
     public String likeReview(@PathVariable("reviewId") Long reviewId,
-                             @SessionAttribute("userName") String userName) {
+                             Authentication authentication) {
+        String userName=authentication!=null?authentication.getName():null;
         userService.addLikedReview(userName, reviewId);
 
         return "redirect:/review/" + reviewId;

@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
   User: sheha
@@ -154,14 +155,17 @@
 <div class="login-block">
 
   <h1>Login</h1>
-  <c:if test="${error!=null}">
-    <p style="color: red">${error}</p>
+  <c:if test="${param.error!=null}">
+    <p style="color: red">username or password is not correct</p>
   </c:if>
-  <form action="/login" method="post">
+  <c:if test="${param.logout!=null}">
+    <p style="color: green">You sign out successfully</p>
+  </c:if>
+  <form:form >
     <label for="username"></label><input type="text" name="username" placeholder="Username" id="username" />
     <label for="password"></label><input type="password" name="password"  placeholder="Password" id="password" />
     <input type="submit" value="Login" class="enter">
-</form>
+</form:form>
 </div>
 </body>
 </html>
