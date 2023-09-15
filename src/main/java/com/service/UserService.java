@@ -52,6 +52,7 @@ public interface UserService {
 
 
     void addLikedReview(String userName, Long reviewID);
+    void removeLikedReview(String userName, Long reviewID);
     boolean isLikedReview(String userName, Long reviewID);
 
 

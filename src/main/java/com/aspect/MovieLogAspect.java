@@ -77,12 +77,15 @@ public class MovieLogAspect {
     public void logMovie10(JoinPoint joinPoint) {
         String userName = (String) joinPoint.getArgs()[0];
         Long reviewID = (Long) joinPoint.getArgs()[1];
-        if(userService.isLikedReview(userName, reviewID))
-            userService.addLogReview(userName, reviewID, "unlike review");
-        else
-            userService.addLogReview(userName, reviewID, "like review");
+        userService.addLogReview(userName, reviewID, "like review");
     }
+    @Before("execution(* com.service.UserServiceImpl.removeLikedReview(..))")
+    public void logMovie11(JoinPoint joinPoint) {
+        String userName = (String) joinPoint.getArgs()[0];
+        Long reviewID = (Long) joinPoint.getArgs()[1];
+        userService.addLogReview(userName, reviewID, "unlike review");
 
+    }
 
 
 }

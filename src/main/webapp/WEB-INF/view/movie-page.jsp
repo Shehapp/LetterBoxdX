@@ -280,6 +280,20 @@
     .icon-heart-empty {
       color: #333; /* Change color to your preference */
     }
+    .test-like {
+      border: none;
+      background: none;
+      padding: 0;
+      font: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+      font-size: 19px;
+      font-style: italic;
+
+      color: #777;
+    }
     .test-button {
       border: none;
       background: none;
@@ -518,19 +532,29 @@
             </span>
             </span>
             </c:if>
+
+
             <c:if test="${userName!=null && review1.userName!=userName}">
-              <form>
-                <a   href="/movie/${movie.imdbID}/like-review/${review1.reviewId}"><span class="likes">&#10084;<span class="join-year">
+
                     <c:if test="${review1.likedByUser ==true}">
-                      unlike
+            <form:form action="/movie/${movie.imdbID}/unlike-review/${review1.reviewId}" method="post">
+            <span class="likes">&#10084;<span class="join-year">
+              <input class="test-like" type="submit" value="unlike">
+            </form:form>
                     </c:if>
+
+
                   <c:if test="${review1.likedByUser ==false}">
-                    like
+                   <form:form action="/movie/${movie.imdbID}/like-review/${review1.reviewId}" method="post">
+            <span class="likes">&#10084;<span class="join-year">
+              <input class="test-like" type="submit" value="like">
+            </form:form>
                   </c:if>
                     ${review1.likes} likes
-                </span></span></a>
-              </form>
+                </span></span>
                 </c:if>
+
+
           </div>
         </div>
         <br><br>

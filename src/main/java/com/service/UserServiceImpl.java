@@ -308,13 +308,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void addLikedReview(String userName, Long reviewID) {
-        if(!this.isLikedReview(userName, reviewID)){
-            userDAO.addLikedReview(userName, reviewID);}
-        else {
-            userDAO.removeLikedReview(userName, reviewID);
-        }
+            userDAO.addLikedReview(userName, reviewID);
     }
 
+    @Override
+    public void removeLikedReview(String userName, Long reviewID) {
+        userDAO.removeLikedReview(userName, reviewID);
+    }
 
 
     @Override

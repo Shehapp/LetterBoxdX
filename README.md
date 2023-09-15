@@ -23,7 +23,7 @@ The application is written using Spring MVC framework and Maven (for external de
 
 **Backend technologies**
 * Java
-* Spring MVC, Spring AOP
+* Spring MVC, Spring AOP, Spring Security
 * Hibernate ORM, Hibernate Validator
 * JSON
 * Project Lombok

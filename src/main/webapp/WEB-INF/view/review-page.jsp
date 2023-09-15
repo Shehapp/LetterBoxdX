@@ -264,6 +264,20 @@
     .form-container .btn:hover, .open-button:hover {
       opacity: 1;
     }
+    .test-like {
+      border: none;
+      background: none;
+      padding: 0;
+      font: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+      font-size: 19px;
+      font-style: italic;
+
+      color: #777;
+    }
     .rev {
       font-size: 19px;
       font-style: italic;
@@ -340,17 +354,22 @@
             </span>
     </c:if>
     <c:if test="${userName!=null && review.userName!=userName}">
-      <form>
-        <a   href="/movie/${review.imdbID}/like-review/${review.reviewId}"><span class="likes">&#10084;<span class="join-year">
+
                     <c:if test="${review.likedByUser ==true}">
-                      unlike
+      <form:form action="/movie/${review.imdbID}/unlike-review/${review.reviewId}" method="post">
+      <span class="likes">&#10084;<span class="join-year">
+              <input class="test-like" type="submit" value="unlike">
+            </form:form>
                     </c:if>
                   <c:if test="${review.likedByUser ==false}">
-                    like
+                     <form:form action="/movie/${review.imdbID}/like-review/${review.reviewId}" method="post">
+            <span class="likes">&#10084;<span class="join-year">
+              <input class="test-like" type="submit" value="like">
+            </form:form>
                   </c:if>
                     ${review.likes} likes
-                </span></span></a>
-      </form>
+                </span></span>
+
     </c:if>
 
   </div>

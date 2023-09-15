@@ -86,7 +86,7 @@ public class MovieController {
     }
 
 
-    @RequestMapping("/like-review/{reviewId}")
+    @PostMapping("/like-review/{reviewId}")
     public String likeReview(@PathVariable("reviewId") Long reviewId,
                              Authentication authentication) {
         String userName=authentication!=null?authentication.getName():null;
@@ -94,6 +94,13 @@ public class MovieController {
 
         return "redirect:/review/" + reviewId;
     }
+    @PostMapping("/unlike-review/{reviewId}")
+    public String unlikeReview(@PathVariable("reviewId") Long reviewId,
+                             Authentication authentication) {
+        String userName=authentication!=null?authentication.getName():null;
+        userService.removeLikedReview(userName, reviewId);
 
+        return "redirect:/review/" + reviewId;
+    }
 }
 

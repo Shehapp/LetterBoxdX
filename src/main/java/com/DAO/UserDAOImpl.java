@@ -104,7 +104,7 @@ public class UserDAOImpl implements UserDAO{
     @Override
     public List<Movie> getWatchList(String userName) {
         User user= this.getUserByUserName(userName);
-        return user.getWatchlist();
+        return new ArrayList<>(user.getWatchlist());
     }
 
     @Override
