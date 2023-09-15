@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class Review {
     private Long Id;
     private String myReview;
     private Double rating;
-    private LocalDate createdAt;
+    private Timestamp createdAt;
 
     @JoinColumn(name = "user_id")
     @ManyToOne

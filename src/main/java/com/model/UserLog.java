@@ -23,7 +23,7 @@ public abstract class UserLog {
     @JoinColumn(name = "user_id")
     private User user;
     String description;
-    private LocalDate createdAt;
+    private Timestamp createdAt;
 
 
 }

@@ -6,9 +6,9 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import java.sql.Date;
-import java.time.LocalDate;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @Repository
@@ -95,7 +95,7 @@ public class UserDAOImpl implements UserDAO{
 
     @Override
     public List<Watched> getWatched(String userName, int size) {
-        return entityManager.createQuery("from Watched w where w.user.userName=:userName order by w.createdAt ASC ", Watched.class)
+        return entityManager.createQuery("from Watched w where w.user.userName=:userName order by w.createdAt desc ", Watched.class)
                 .setParameter("userName", userName)
                 .setFirstResult(0).setMaxResults(size)
                 .getResultList();
@@ -104,7 +104,7 @@ public class UserDAOImpl implements UserDAO{
     @Override
     public List<Movie> getWatchList(String userName) {
         User user= this.getUserByUserName(userName);
-        return new ArrayList<>(user.getWatchlist());
+        return user.getWatchlist();
     }
 
     @Override
@@ -119,13 +119,13 @@ public class UserDAOImpl implements UserDAO{
 
     @Override
     public List<Review> getMovieReviews(String imdbID) {
-        return entityManager.createQuery("from Review where movie.imdbId=:imdbId",Review.class).
+        return entityManager.createQuery("from Review where movie.imdbId=:imdbId order by createdAt desc ",Review.class).
                 setParameter("imdbId",imdbID).getResultList();
     }
 
     @Override
     public List<Review> getUserReviews(String userName) {
-        return entityManager.createQuery("from Review where user.userName=:userName",Review.class).
+        return entityManager.createQuery("from Review where user.userName=:userName order by createdAt desc",Review.class).
                 setParameter("userName",userName).getResultList();
     }
 
@@ -200,7 +200,7 @@ public class UserDAOImpl implements UserDAO{
                 .getSingleResult();
         watched.setMovie(movie);
         watched.setUser(user);
-        watched.setCreatedAt(LocalDate.now());
+        watched.setCreatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));//<<<<
         user.getWatched().add(watched);
         entityManager.merge(user);
 
@@ -266,7 +266,7 @@ public class UserDAOImpl implements UserDAO{
 
     @Override
     public List<UserLog> getUserLogs(String userName) {
-        return entityManager.createQuery("from UserLog where user.userName=:userName",UserLog.class)
+        return entityManager.createQuery("from UserLog where user.userName=:userName order by createdAt desc",UserLog.class)
                 .setParameter("userName",userName)
                 .getResultList();
     }

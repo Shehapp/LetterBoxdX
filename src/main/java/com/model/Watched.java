@@ -18,7 +18,7 @@ public class Watched {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
-    private LocalDate createdAt;
+    private Timestamp createdAt;
 
     @ManyToOne
     @JoinColumn(name="movie_id")

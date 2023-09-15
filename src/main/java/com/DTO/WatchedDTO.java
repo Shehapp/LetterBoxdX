@@ -18,5 +18,5 @@ public class WatchedDTO {
     private String title;
     private String year;
     private String poster;
-    LocalDate createdAt;
+    private LocalDate createdAt;
 }

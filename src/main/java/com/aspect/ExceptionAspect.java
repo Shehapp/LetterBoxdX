@@ -11,14 +11,12 @@ import org.springframework.web.server.ResponseStatusException;
 @Aspect
 public class ExceptionAspect {
 
-
-
-
     @Around("execution(* com.controller.*.*(..))")
     public Object exceptionHandler(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
             return joinPoint.proceed();
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"m3l4");
         }
     }

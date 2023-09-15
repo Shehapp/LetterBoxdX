@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class User {
     private String email;
     private String password;
     private String photoId;
-    private LocalDate createdAt;
+    private Timestamp createdAt;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")

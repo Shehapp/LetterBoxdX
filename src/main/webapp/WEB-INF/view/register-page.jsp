@@ -160,12 +160,11 @@
 
     </ul>
 </header>
-<br> <br> <br> <br> <br> <br> <br> <br> <br>
+<br> <br> <br> <br> <br> <br>
 <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 <div class="logo"></div>
 <div class="login-block">
     <h1>Register</h1>
-
     <form:form action="/register" method="post" modelAttribute="userDTO">
         <form:errors path="username" cssClass="error" /><br>
         <form:errors path="email" cssClass="error" /><br>

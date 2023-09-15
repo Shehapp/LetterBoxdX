@@ -7,11 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.time.LocalDate;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 /*
@@ -26,6 +27,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     UserDAO userDAO;
     @Autowired
     MovieService movieService;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
@@ -68,9 +71,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User convertUserDTOToUser(UserDTO userDTO){
         User user=new User();
         user.setUserName(userDTO.getUsername());
-        user.setPassword(userDTO.getPassword());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setEmail(userDTO.getEmail());
-        user.setCreatedAt(LocalDate.now());
+        user.setCreatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
         user.setPhotoId(new Random().nextInt(10)+".png");
         return user;
     }
@@ -148,7 +151,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             WatchedDTO watchedDTO=new WatchedDTO();
 
             watchedDTO.setImdbID(w.getMovie().getImdbId());
-            watchedDTO.setCreatedAt(w.getCreatedAt());
+            watchedDTO.setCreatedAt(w.getCreatedAt().toLocalDateTime().toLocalDate());
             watchedDTO.setPoster(w.getMovie().getPoster());
             watchedDTO.setTitle(w.getMovie().getTitle());
             watchedDTO.setYear(w.getMovie().getYear());
@@ -241,7 +244,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         reviewDTO.setReview(review.getMyReview());
         reviewDTO.setRating(review.getRating());
         reviewDTO.setImdbID(review.getMovie().getImdbId());
-        reviewDTO.setCreatedAt(review.getCreatedAt());
+        reviewDTO.setCreatedAt(review.getCreatedAt().toLocalDateTime().toLocalDate());
         reviewDTO.setUserName(review.getUser().getUserName());
         reviewDTO.setUserImage(review.getUser().getPhotoId());
         reviewDTO.setLikes((long) review.getLikedBy().size());
@@ -277,7 +280,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Review review=new Review();
         review.setMyReview(reviewDTO.getReview());
         review.setRating(reviewDTO.getRating());
-        review.setCreatedAt(LocalDate.now());
+        review.setCreatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
 
         review.setUser(this.getUserByUserName(reviewDTO.getUserName()));
         review.setMovie(movieService.getMovieById(reviewDTO.getImdbID()));
@@ -291,7 +294,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         review.setMyReview(reviewDTO.getReview());
         review.setRating(reviewDTO.getRating());
-        review.setCreatedAt(LocalDate.now());
+        review.setCreatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
 
         userDAO.updateReview(review);
         reviewDTO.setReviewId(review.getId());
@@ -337,7 +340,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         ProfileDTO profileDTO=new ProfileDTO();
         profileDTO.setName(name);
-        profileDTO.setCreatedAt(Date.valueOf(user.getCreatedAt()));
+        profileDTO.setCreatedAt(user.getCreatedAt().toLocalDateTime().toLocalDate());
         profileDTO.setPoster(user.getPhotoId());
         profileDTO.setMyProfile(name.equals(userName));
         return profileDTO;
@@ -349,7 +352,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userLogMovie.setUser(this.getUserByUserName(userName));
         userLogMovie.setMovie(movieService.getMovieById(imdbID));
         userLogMovie.setDescription(description);
-        userLogMovie.setCreatedAt(LocalDate.now());
+        userLogMovie.setCreatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
         userDAO.addLog(userLogMovie);
     }
 
@@ -359,7 +362,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userLogReview.setUser(this.getUserByUserName(userName));
         userLogReview.setReview(userDAO.getReview(reviewId));
         userLogReview.setDescription(description);
-        userLogReview.setCreatedAt(LocalDate.now());
+        userLogReview.setCreatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
         userDAO.addLog(userLogReview);
     }
 
@@ -385,7 +388,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         UserLogDTO userLogDTO=new UserLogDTO();
         userLogDTO.setUserName(userLog.getUser().getUserName());
         userLogDTO.setDescription(userLog.getDescription());
-        userLogDTO.setCreatedAt(userLog.getCreatedAt());
+        userLogDTO.setCreatedAt(userLog.getCreatedAt().toLocalDateTime().toLocalDate());
         if(userLog instanceof UserLogMovie){
             userLogDTO.setMovieName(((UserLogMovie) userLog).getMovie().getTitle());
             userLogDTO.setId(((UserLogMovie) userLog).getMovie().getImdbId());

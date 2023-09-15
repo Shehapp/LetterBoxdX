@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class ProfileDTO {
     String name;
-    Date createdAt;
+    LocalDate createdAt;
     String poster;
     boolean isMyProfile;
 }
