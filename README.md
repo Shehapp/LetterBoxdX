@@ -61,6 +61,11 @@ The application is written using Spring MVC framework and Maven (for external de
 Big picture on the database relationships.
 ![Database](img/database.jpg)
 
+Detailed look on user entity relationships.Some of them,
+like Confirmation_email_token are specific for Spring Security confirm email and
+persistent_logins for remember me functionality
+![Database](img/securityDia.png)
+
 ## Screenshots
 
 Login page
