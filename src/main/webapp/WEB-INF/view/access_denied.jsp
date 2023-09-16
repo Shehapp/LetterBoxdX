@@ -11,7 +11,6 @@
     <title>NOT Allowed</title>
 </head>
 <body>
-<h1>NOT Allowed</h1>
-<img src="/UrlToReach/assets/notallowed.png" >
+<img  src="/UrlToReach/assets/notallowed.png" >
 </body>
 </html>

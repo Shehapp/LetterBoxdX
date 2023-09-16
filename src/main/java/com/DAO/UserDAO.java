@@ -7,6 +7,7 @@ import java.util.List;
 public interface UserDAO {
 
     void addUser(User user);
+    void updateUser(User user);
     User getUserByUserName(String userName);
     User getUserByUserNameAndPassword(String userName, String password);
 
@@ -47,5 +48,7 @@ public interface UserDAO {
 
     void addRole(Role role);
     Role getRoleByName(String name);
+
+    User getUserByEmail(String email);
 
 }

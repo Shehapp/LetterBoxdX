@@ -26,6 +26,7 @@ public class User {
     private String password;
     private String photoId;
     private Timestamp createdAt;
+    private boolean enabled;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

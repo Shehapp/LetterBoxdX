@@ -12,6 +12,7 @@ import java.lang.annotation.*;
 public @interface EmailExist {
 
     String message() default "this email is already exist";
+    boolean choice() default false;
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

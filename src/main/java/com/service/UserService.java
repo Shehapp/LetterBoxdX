@@ -67,4 +67,7 @@ public interface UserService {
     UserLogDTO convertUserLogToUserLogDTO(UserLog userLog);
 
     Role getRoleByName(String name);
+
+    String getUserNameByEmail(String email);
+    void enableUser(String userName);
 }

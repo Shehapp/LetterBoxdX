@@ -26,6 +26,11 @@ public class UserDAOImpl implements UserDAO{
     }
 
     @Override
+    public void updateUser(User user) {
+        entityManager.merge(user);
+    }
+
+    @Override
     public User getUserByUserName(String userName) {
 
         try {
@@ -281,6 +286,17 @@ public class UserDAOImpl implements UserDAO{
         try {
             return entityManager.createQuery("from Role r where r.name=:name", Role.class)
                     .setParameter("name", name)
+                    .getSingleResult();
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        try {
+            return entityManager.createQuery("from User u where u.email=:email",User.class)
+                    .setParameter("email",email)
                     .getSingleResult();
         }catch (Exception e){
             return null;

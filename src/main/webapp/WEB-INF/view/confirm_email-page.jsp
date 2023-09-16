@@ -154,22 +154,13 @@
 <div class="logo"></div>
 <div class="login-block">
 
-  <h1>Login</h1>
+  <h1>Confirm your Email</h1>
   <c:if test="${param.error!=null}">
-    <p style="color: red">username or password is not correct</p>
+    <p style="color: red">this email does not exist :(</p>
   </c:if>
-  <c:if test="${param.success!=null}">
-    <p style="color: green">email confirmed successfully!</p>
-  </c:if>
-  <c:if test="${param.logout!=null}">
-    <p style="color: green">You sign out successfully</p>
-  </c:if>
-  <form:form >
-    <label for="username"></label><input type="text" name="username" placeholder="Username" id="username" />
-    <label for="password"></label><input type="password" name="password"  placeholder="Password" id="password" />
-    <label for="remember-me" >Remember me</label>
-    <input type="checkbox" value="1" name="remember-me" id="remember-me" style="  margin-bottom: 54px; transform: scale(0.4); /* Adjust the scale value as needed */">
-    <input type="submit" value="Login" class="enter">
+  <form:form method="post" action="/confirm" modelAttribute="confirmEmail">
+    <label for="email"></label><form:input path="email" placeholder="Enter your email" id="email" />
+    <input type="submit" value="Send SMS" class="enter">
 </form:form>
 </div>
 </body>

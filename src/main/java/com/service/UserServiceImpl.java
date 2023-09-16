@@ -4,6 +4,7 @@ import com.DAO.UserDAO;
 import com.DTO.*;
 import com.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,7 +19,7 @@ import java.util.*;
 * convertMethods has implemented by:
 * @shahpp
 * @4aiGpt
-* */
+*/
 @Service("userDetailsService")
 public class UserServiceImpl implements UserService, UserDetailsService {
 
@@ -31,21 +32,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user=this.getUserByUserName(s);
+        User user = this.getUserByUserName(s);
 
-        List<SimpleGrantedAuthority> authorities=new ArrayList<>();
-        for (Role auth:user.getRoles()){
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        for (Role auth : user.getRoles()) {
             authorities.add(new SimpleGrantedAuthority(auth.getName()));
         }
 
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.getUserName())
-                .password(user.getPassword())
-                .authorities(authorities)
-                .build();
+        return new org.springframework.security.core.userdetails.
+                User(
+                user.getUserName(),
+                user.getPassword(),
+                user.isEnabled(),
+                true,
+                true,
+                true,
+                authorities);
+
     }
-
-
 
 
 
@@ -77,6 +81,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if(user.getRoles()==null) {
             user.setRoles(new HashSet<>());
         }
+        user.setEnabled(false);
         user.getRoles().add(this.getRoleByName(roles.toString()));
         user.setUserName(userDTO.getUsername());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
@@ -410,6 +415,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             userDAO.addRole(role);
         }
         return role;
+    }
+
+    @Override
+    public String getUserNameByEmail(String email) {
+        return userDAO.getUserByEmail(email).getUserName();
+    }
+
+    @Override
+    public void enableUser(String userName) {
+        User user=this.getUserByUserName(userName);
+        user.setEnabled(true);
+        userDAO.updateUser(user);
     }
 
 
