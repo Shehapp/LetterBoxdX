@@ -28,7 +28,7 @@ public class EmailServiceImpl implements EmailService{
                         + "Please click on the link below to confirm your email:\n"
                         + "%s\n\n"
                         + "Thank you,\n"
-                        + "YourAppName", name, confirmationLink);
+                        + "/LetterBoxdX", name, confirmationLink);
         emailMessage.setText(emailText);
         javaMailSender.send(emailMessage);
 
