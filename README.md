@@ -54,12 +54,12 @@ The application is written using Spring MVC framework and Maven (for external de
    
    `db.password=[YOUR PASSWORD HERE]`
 
-4. The application will avaialble under URL `http://localhost:8080/home`
+4. The application will available under URL `http://localhost:8080/home`
 
 ## Database Diagram
 
 Big picture on the database relationships.
-![Database](img/database.png)
+![Database](img/database.jpg)
 
 ## Screenshots
 
