@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.format.Formatter;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,7 +25,6 @@ public class LoginController {
 
     @GetMapping("/login")
     String login(){
-
         return "login-page";
     }
 
@@ -41,6 +41,12 @@ public class LoginController {
         userService.addUser(user);
         return "redirect:/login";
     }
+
+    @RequestMapping("/access_denied")
+    String accessDenied(){
+        return "access_denied";
+    }
+
 
 
     @InitBinder
