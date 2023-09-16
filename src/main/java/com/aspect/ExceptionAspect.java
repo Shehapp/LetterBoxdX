@@ -16,8 +16,7 @@ public class ExceptionAspect {
         try {
             return joinPoint.proceed();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"m3l4");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
         }
     }
 }

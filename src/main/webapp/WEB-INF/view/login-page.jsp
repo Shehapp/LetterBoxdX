@@ -158,8 +158,8 @@
   <c:if test="${param.error!=null}">
     <p style="color: red">username or password is not correct</p>
   </c:if>
-  <c:if test="${param.success!=null}">
-    <p style="color: green">email confirmed successfully!</p>
+  <c:if test="${param.confirm!=null}">
+    <p style="color: green">we email you for confirming</p>
   </c:if>
   <c:if test="${param.logout!=null}">
     <p style="color: green">You sign out successfully</p>

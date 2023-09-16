@@ -14,26 +14,24 @@ public class EmailServiceImpl implements EmailService{
     @Autowired
     JavaMailSender javaMailSender;
 
-    @Override
-    public String generateCode() {
-        StringBuilder code= new StringBuilder();
-        Random random=new Random();
-        for (int i=0;i<8;i++){
-            code.append(random.nextInt(10));
-        }
-        return code.toString();
-    }
+
 
     @Override
-    public String sendSMS(String email,String name) {
-        String code=this.generateCode();
+    public void sendSMS(String email,String name,String token) {
         SimpleMailMessage emailMessage=new SimpleMailMessage();
 
         emailMessage.setTo(email);
         emailMessage.setSubject("Confirm Email");
-        emailMessage.setText("Hi, "+name+" \n this is the Code : "+code+" /n bye");
+        String confirmationLink = String.format("http://localhost:8080/confirm/%s", token);
+        String emailText = String.format(
+                "Hello %s,\n\n"
+                        + "Please click on the link below to confirm your email:\n"
+                        + "%s\n\n"
+                        + "Thank you,\n"
+                        + "YourAppName", name, confirmationLink);
+        emailMessage.setText(emailText);
         javaMailSender.send(emailMessage);
-        return code;
 
     }
+
 }

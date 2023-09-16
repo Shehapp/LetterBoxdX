@@ -6,8 +6,8 @@ import com.model.*;
 import java.util.List;
 
 public interface UserService {
-    User getUserByUserNameAndPassword(String userName, String password);
     void addUser(UserDTO user);
+    void  updateUser(User user);
     boolean isUserExist(String userName);
     boolean isEmailExist(String email);
     User convertUserDTOToUser(UserDTO userDTO, Roles roles);

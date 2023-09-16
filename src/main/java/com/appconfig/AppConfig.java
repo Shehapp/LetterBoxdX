@@ -16,6 +16,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import java.util.Objects;
 import java.util.Properties;
 
 
@@ -78,7 +79,7 @@ public class AppConfig implements WebMvcConfigurer {
 
 
         mailSender.setHost(environment.getProperty("mail.host"));
-        mailSender.setPort(getIntProperty("mail.port"));
+        mailSender.setPort(Integer.parseInt(Objects.requireNonNull(environment.getProperty("mail.port"))));
         mailSender.setUsername(environment.getProperty("mail.username"));
         mailSender.setPassword(environment.getProperty("mail.password"));
         mailSender.setJavaMailProperties(getProperties());
@@ -87,15 +88,10 @@ public class AppConfig implements WebMvcConfigurer {
     }
     public Properties getProperties(){
         Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
-        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.auth", environment.getProperty("mail.smtp.auth"));
+        props.put("mail.smtp.ssl.protocols", environment.getProperty("mail.smtp.ssl.protocols"));
+        props.put("mail.smtp.starttls.enable", environment.getProperty("mail.smtp.starttls.enable"));
         return props;
-    }
-    int getIntProperty(String property){
-        String ans = environment.getProperty(property);
-        assert ans != null;
-        return Integer.parseInt(ans);
     }
 
 }

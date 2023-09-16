@@ -3,8 +3,8 @@ package com.service;
 import com.DAO.UserDAO;
 import com.DTO.*;
 import com.model.*;
+import com.model.token.ConfirmationToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /*
@@ -29,6 +30,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     MovieService movieService;
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    ConfirmationTokenService confirmationTokenService;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
@@ -53,15 +56,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
 
-
-    public User getUserByUserNameAndPassword(String userName, String password) {
-        return userDAO.getUserByUserNameAndPassword(userName, password);
-    }
-
     @Override
     public void addUser(UserDTO userDTO) {
         User user=this.convertUserDTOToUser(userDTO,Roles.USER);
+
         userDAO.addUser(user);
+
+        confirmationTokenService.save(user.getUserName());
+
+    }
+
+    @Override
+    public void updateUser(User user) {
+        userDAO.updateUser(user);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.model;
+package com.model.token;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

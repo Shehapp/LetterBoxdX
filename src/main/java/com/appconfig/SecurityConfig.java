@@ -1,5 +1,6 @@
 package com.appconfig;
 
+import com.service.ConfirmationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -12,15 +13,18 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import java.io.IOException;
 
 @EnableWebSecurity(debug = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -45,34 +49,55 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers(
-                        "/movie/*/*/**")
-                .hasAnyAuthority("ADMIN", "USER", "SUPERMAN")
+                        .antMatchers(
+                           "/",
+                           "/home",
+                           "/register",
+                           "/movie/*",
+                           "/movie",
+                           "/profile/*",
+                           "/profile/*/*",
+                           "/review/*",
+                                "/login",
+                           "/confirm/**",
+                           "/UrlToReach/**")
+                        .permitAll()
                 .and()
-                .formLogin()
-                .loginPage("/login").failureHandler(authenticationFailureHandler())
-                .permitAll()
+                      .formLogin()
+                             .loginPage("/login")
+                             .failureHandler(authenticationFailureHandler()).permitAll()
                 .and()
-                .logout()
+                      .logout()
                 .and()
-                .exceptionHandling()
-                .accessDeniedPage("/access_denied")
+                      .exceptionHandling()
+                              .accessDeniedPage("/access_denied")
                 .and()
-                .rememberMe()
-                .userDetailsService(userDetailsService)
-                .tokenRepository(jdbcTokenRepository())
-                .tokenValiditySeconds(24 * 30 * 60);
+                      .rememberMe()
+                              .userDetailsService(userDetailsService)
+                              .tokenRepository(jdbcTokenRepository())
+                              .tokenValiditySeconds(24 * 30 * 60)
+                .and()
+                .authorizeRequests()
+                .anyRequest().authenticated();
+
 
     }
 
 
     @Bean
     AuthenticationFailureHandler authenticationFailureHandler(){
-        return (request, response, exception) -> {
-            if(exception.getClass().isAssignableFrom(DisabledException.class)){
-                response.sendRedirect("/confirm");
-            }else
-                response.sendRedirect("/login?error");
+        return new AuthenticationFailureHandler() {
+            @Autowired
+            ConfirmationTokenService confirmationTokenService;
+            @Override
+            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+                if(exception.getClass().isAssignableFrom(DisabledException.class)){
+                    String userName=request.getParameter("username");
+                    confirmationTokenService.save(userName);
+                    response.sendRedirect("/login?confirm");
+                }else
+                    response.sendRedirect("/login?error");
+            }
         };
     }
 
@@ -80,9 +105,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web)  {
         web
                 .ignoring()
-                .antMatchers(
-                        "/resources/**",
-                        "/views/**");
+                .antMatchers("/resources/**");
     }
 
     @Bean

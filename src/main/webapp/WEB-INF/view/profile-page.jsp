@@ -320,7 +320,6 @@
     </ul>
 </header>
 <br><br>
-
 <div class="f">
     <div class="profile-section">
         <img class="profile-pic" src="/UrlToReach/assets/profilePics/${profileData.poster}" alt="User Profile Picture">
