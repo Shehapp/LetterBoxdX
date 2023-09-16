@@ -20,7 +20,6 @@ public class MovieController {
     public String fav(@PathVariable("id") String movieId,
                       @PathVariable("action") boolean action,
                       Authentication authentication) {
-        System.out.println("iam heeeeeeeeeeeeerrrrrrrrrrrrrrrrr");
         String userName=authentication!=null?authentication.getName():null;
         if (action) {
             userService.addMovieToFavorite(userName, movieId);
