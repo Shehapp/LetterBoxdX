@@ -34,7 +34,8 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    String registerPost(@Valid @ModelAttribute("userDTO") UserDTO user, BindingResult bindingResult){
+    String registerPost(@Valid @ModelAttribute("userDTO") UserDTO user, 
+                        BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return "register-page";
         }
